@@ -127,6 +127,10 @@ where $(\tau)$ is a similarity threshold tuned on a validation subset.
 ## Appendix
 
 ### Repo Organisation
+This repository contains two files (for now):
+
+- **`main.ipynb`** - Jupyter notebook containing all code related to the P2 hand-in.
+- **`README.md`** - Detailed project proposal and documentation of methods, timeline, and team organization.
 
 
 ### Questions for TAs 
