@@ -100,26 +100,27 @@ where $(\tau)$ is a similarity threshold tuned on a validation subset.
 
 ## Proposed Timeline
 
-| Week              | Milestone | Expected Output |
-|-------------------|------------|-----------------|
-| **Week 45 (Now)** | Complete P2 deliverable | Clean dataset subset, descriptive notebook, finalized README |
-| **Week 46**       |  |  |
-| **Week x**        |  |  |
-| **Week y**        |  |  |
-| **Week 5**        |  |  |
+| Week                  | Planned Focus Area               | Expected Output                                                                          |
+|-----------------------|----------------------------------|------------------------------------------------------------------------------------------|
+| **Week 45 (Current)** | Complete P2 deliverable          | Clean dataset subset, descriptive notebook, finalized README                             |
+| **Week 46**           | Embedding & Divergence Detection | Implement sentence embedding pipeline, prototype cosine similarity computation           |
+| **Week 47**           | Embedding & Divergence Detection | Tune similarity thresholds, validate divergence detection results                        |
+| **Week 48**           | Summarization & Baseline         | Implement T5-small and BART-base summarization on sample episodes                        |
+| **Week 49**           | Summarization & Baseline         | Tune model parameters and compare summarization quality                                  |
+| **Week 50**           | Evaluation & Visualization       | Evaluate summaries (ROUGE + qualitative), visualize divergence frequency & role balance  |
+| **Week 51**           | Complete P3 deliverable          | Finalized notebook, visualizations, and report                                                                        |
 
 ---
 
 ## Organization Within the Team
 
-
-| Milestone         | Milestone | Expected Output |
-|-------------------|------------|-----------------|
-| **Week 45 (Now)** | Complete P2 deliverable | Clean dataset subset, descriptive notebook, finalized README |
-| **Week 46**       |  |  |
-| **Week x**        |  |  |
-| **Week y**        |  |  |
-| **Week 5**        |  |  |
+| Week                  | Milestone                                   |
+|-----------------------|---------------------------------------------|
+| **Week 45 (Current)** | Complete P2 deliverable                     | 
+| **Week 47**           | Finalize Embedding and Divergence Detection | 
+| **Week 49**           | Finalize Summarization & Baseline           |
+| **Week 50**           | Complete Evaluation & Visualization         |
+| **Week 51**           | Submit P3 deliverable                       | 
 
 ---
 
