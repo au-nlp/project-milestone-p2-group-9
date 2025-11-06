@@ -42,6 +42,7 @@ We will primarily use the **speaker-turn transcripts** for summarization and div
 
 ### Additional Data (Potential)
 - If time permits, we might include **ASR-based summaries** (Automatic Speech Recognition) from open podcast APIs (e.g., Podscribe or ListenNotes) to compare our model to that of a generic automated summary.
+- We've discovered a podcast dataset that also features rounds. It includes a simple episode summary, the text of each round's speech, and the speaker's identity and name. Similar to SPoRC, we believe it's well-suited as an expansion dataset. Here's the link: https://github.com/zcgzcgzcg1/MediaSum
 
 ### Data Handling Plan
 - We verified feasibility through prototype scripts that:
