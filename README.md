@@ -126,7 +126,23 @@ The bottom layer employs Microsoft’s *DeBERTa-v3-large-MNLI* model for stance 
 
 ---
 
-### **1. Topic-Oriented Summarization (AAAI 2021)**
+### **1. Retrieval-Augmented Generation (RAG) Construction**
+
+This study adopts a **Retrieval-Augmented Generation (RAG)** framework that integrates retrieval, summarization, and stance detection modules to enable question answering across multiple podcast episodes.  
+
+The system first uses a sentence embedding model (e.g., `all-MiniLM-L6-v2`) to encode each episode segment into dense vectors and stores them in a vector index (FAISS / Chroma).  
+When a user submits a query *q*, the system computes its embedding *e_q* and retrieves the most relevant segments *u_i* based on cosine similarity:
+
+$$
+\text{Retrieve}(q) = \arg\max_{u_i} \frac{e_q^\top e_i}{\lVert e_q \rVert \lVert e_i \rVert}
+$$
+
+The retrieved content is concatenated into a contextual passage *C(q)* and sequentially processed by the summarization and conflict detection modules:  
+
+
+---
+
+### **2. Topic-Oriented Summarization (AAAI 2021)**
 
 At the top layer, the system generates a **topic-focused global summary**.  
 Each dialogue segment *u_i* is assigned a topic distribution *p(z | u_i)* through topic modeling.  
@@ -139,17 +155,7 @@ Segments with the highest saliency are concatenated and passed to a summarizatio
 
 ---
 
-### **2. Role-Oriented Summarization (LREC-COLING 2024)**
-
-At the mid layer, the system produces **role-specific summaries** using the CIAM framework.  
-Given dialogue *x* and role tag *r* ∈ {HOST, GUEST}, generation is conditioned on the role token:
-
-
-Segments with the highest saliency are concatenated and passed to a summarization model (e.g., T5/BART/LLM) to obtain the topic summary *S_topic*.
-
----
-
-### **2. Role-Oriented Summarization (LREC-COLING 2024)**
+### **3. Role-Oriented Summarization (LREC-COLING 2024)**
 
 At the mid layer, the system produces **role-specific summaries** using the CIAM framework.  
 Given dialogue *x* and role tag *r* ∈ {HOST, GUEST}, generation is conditioned on the role token:
@@ -166,18 +172,7 @@ This produces two summaries: *S_host* and *S_guest*.
 
 ---
 
-### **3. Conflict Detection (Microsoft DeBERTa-v3-large-MNLI)**
-
-At the bottom layer, semantic relations between *S_host* and *S_guest* are classified by the NLI model.  
-The model outputs three probabilities — entailment, neutral, and contradiction — via softmax:
-
-
-where *h_i^r* is the role representation, *sim()* denotes cosine similarity, and *τ* is the temperature coefficient.  
-This produces two summaries: *S_host* and *S_guest*.
-
----
-
-### **3. Conflict Detection (Microsoft DeBERTa-v3-large-MNLI)**
+### **4. Conflict Detection (Microsoft DeBERTa-v3-large-MNLI)**
 
 At the bottom layer, semantic relations between *S_host* and *S_guest* are classified by the NLI model.  
 The model outputs three probabilities — entailment, neutral, and contradiction — via softmax:
@@ -194,7 +189,7 @@ Thresholds θ_e, θ_c ∈ [0.6, 0.7] are empirically tuned to control boundary s
 
 ---
 
-### **4. Alternative Setup: Qwen 1.5B + LoRA**
+### **5. Alternative Setup: Qwen 1.5B + LoRA**
 
 As an alternative, the pipeline can be replaced with a lightweight **Qwen 1.5B-Chat model fine-tuned via LoRA**,  
 allowing end-to-end generation of role summaries and stance predictions under limited computational resources.
