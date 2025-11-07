@@ -3,7 +3,13 @@
 
 ## Abstract
 Podcasts are rich sources of spontaneous, multi-speaker dialogue that mix storytelling, debate, and information sharing. Yet, understanding long podcast episodes remains challenging for listeners and for downstream NLP applications.  
-Our project aims to build a **role-aware podcast understanding(QA) system** that generates both **global** and **role-specific** summaries, while also detecting **divergent conversational segments**, meaning moments when the host and guest disagree or shift topics.  
+Our project aims to build a **role-aware podcast understanding(QA/RAG) system** that generates both **global** and **role-specific** summaries, while also detecting **divergent conversational segments**, meaning moments when the host and guest disagree or shift topics. Specifically:
+1. When a topic is asked (e.g., "AI and education"), match the relevant TV series and output a summary related to the question.
+
+2. When a specific question from a particular episode is asked (without specifying the episode, e.g., "Will AI exacerbate inequality in schools?"), provide a summary of the different characters' perspectives.
+
+3. Of course, conflict detection (disagree, agree, neutral) is necessary during the summarization process.
+
 We use the **SPoRC dataset**, a large-scale corpus of podcast transcripts with speaker-turn annotations, to model host-guest dynamics. Through embedding-based discourse analysis and transformer-based summarization models, we intend to create structured insights that reflect *who said what* and *where the conversation diverged*. This project demonstrates the feasibility of scalable dialogue understanding for complex multi-speaker audio data.
 
 ---
