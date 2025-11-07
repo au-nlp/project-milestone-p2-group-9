@@ -16,9 +16,18 @@ We use the SPoRC dataset, a large corpus of speaker-annotated podcast transcript
 ---
 
 ## Contributions and Novelty
-- **Structured Dialogue Understanding:** Extends podcast summarization to include speaker stances and disagreements.  
-- **Unified Pipeline:** Integrates topic identification, role-conditioned summarization, and stance detection in a single framework.  
-- **Scalable Design:** Modular QA system producing global summaries, role summaries, and conflict insights, balancing interpretability and scalability.
+1. **Research Content**
+   
+   Expands podcast summarization to **dialogue understanding**, incorporating speaker stances and disagreements, enabling structured analysis of multi-character conversations.
+
+2. **Integration Challenges**
+   
+   Combines topic identification, role-conditioned summarization, and stance detection into a single pipeline, ensuring semantic coherence, unified input/output formats, and interpretable results.
+
+3. **System Design**
+   
+   Proposes a modular, multi-layered QA framework producing **global summaries, role summaries, and disagreement insights**, balancing scalability and interpretability.
+
 
 ---
 
