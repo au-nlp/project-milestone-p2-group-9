@@ -161,7 +161,7 @@ To ensure smooth collaboration, we assign core responsibilities while maintainin
 | **Week 50**           | Evaluation & Optimization           | All         | 
 | **Week 51**           | Final P3 Integration and Submission | All         | 
 
-We currently haven't done any distributions to individual people. This could change in the future. 
+We haven't done any distributions to individual people,because we are trying to train parallelly. 
 
 ---
 
