@@ -104,7 +104,7 @@ $$
 - Generate host/guest summaries conditioned on role token $r \in \{\text{HOST}, \text{GUEST}\}$:
 
 $$
-p(y | x, r) = \prod_t p(y_t | y_{<t}, x, \texttt{<r>})
+p(y | x, r) = \prod_t p(y_t | y_{<t}, x, r)
 $$
 
 - CIAM contrastive learning enhances distinction between roles:
