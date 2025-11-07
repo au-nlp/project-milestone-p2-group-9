@@ -43,13 +43,6 @@ We will primarily use the **speaker-turn transcripts** for summarization and div
 - We've discovered a podcast dataset that also features rounds. It includes a simple episode summary, the text of each round's speech, and the speaker's identity and name. Similar to SPoRC, we believe it's well-suited as an expansion dataset. Here's the link: https://github.com/zcgzcgzcg1/MediaSum
   - It is a large JSON file (4.45GB), with text quality slightly higher than the SPoRC dataset. We can process it using methods very similar to those used for the main dataset.
 
-### Data Handling Plan
-- We verified feasibility through prototype scripts that:
-  - Convert `.jsonl.gz` → `.csv` using chunked reading (`pandas` + `tqdm`).
-  - Filter only `host` and `guest` roles.
-  - Clean text by removing empty or pure punctuational and ultra-short turns.
-- Early experiments indicate that, with chunked reading and selective filtering, the dataset can be processed efficiently on standard machines (<16 GB RAM).
-
 ---
 
 ## Methods 
@@ -58,25 +51,14 @@ This project follows a **multi-stage pipeline** for role-aware podcast understan
 
 ---
 
-### 1. Data Preprocessing (Implemented for P2)
-- **Tools:** `pandas`, `gzip`, `csv`, `tqdm`
-- Merge turn-level transcripts with episode metadata by `mp3url`.
-- Clean and normalize speaker roles (retain only `host` and `guest`).
-- Drop empty or extremely short utterances.
-- Compute turn-level statistics (turn count, token length, per-episode balance).
-
-This preprocessing pipeline ensures we can efficiently handle the large SPoRC dataset (20+ GB) and produces a clean dataset ready for further analysis.
-
----
-
-### 2. Hierarchical Summarization Framework (Planned for P3)
+### 1. Hierarchical Summarization Framework (Planned for P3)
 
 This framework extends the baseline summarization to a **three-layer system** inspired by state-of-the-art works:
 
 - Zou et al. (2021), *Topic-Oriented Spoken Dialogue Summarization*  
 - Guan et al. (2024), *Role-Oriented Dialogue Summarization with CIAM*  
 
-#### 2.1 Retrieval-Augmented Generation (RAG)
+#### 1.1 Retrieval-Augmented Generation (RAG)
 - Encode each episode segment with sentence embeddings (`all-MiniLM-L6-v2`) and store in a vector index (FAISS/Chroma).
 - Retrieve top segments for a query $q$ using cosine similarity:
 
@@ -86,7 +68,7 @@ $$
 
 - Retrieved content is used as context for summarization and conflict detection modules.
 
-#### 2.2 Topic-Level Summarization
+#### 1.2 Topic-Level Summarization
 - Assign topic distributions $p(z|u_i)$ to each segment $u_i$.
 - Compute saliency combining topic confidence and relevance to the query $q$:
 
@@ -100,7 +82,7 @@ $$
 
 - Top-scoring segments are passed to T5-small/BART/LLM for global topic summary $S_\text{topic}$.
 
-#### 2.3 Role-Level Summarization
+#### 1.3 Role-Level Summarization
 - Generate host/guest summaries conditioned on role token $r \in \{\text{HOST}, \text{GUEST}\}$:
 
 $$
@@ -115,7 +97,7 @@ $$
 
 - Outputs: $S_\text{host}$, $S_\text{guest}$
 
-#### 2.4 Conflict Detection
+#### 1.4 Conflict Detection
 - Semantic relations between $S_\text{host}$ and $S_\text{guest}$ classified using DeBERTa-v3-large-MNLI.
 - Softmax probabilities for entailment, neutral, contradiction:
 
@@ -134,24 +116,24 @@ else:
     stance = "Partial Agreement / Neutral"
 ```
 
-#### 2.5. Alternative Setup: Qwen 1.5B + LoRA
+#### 1.5. Alternative Setup: Qwen 1.5B + LoRA
 
 As an alternative, the pipeline can be replaced with a lightweight **Qwen 1.5B-Chat model fine-tuned via LoRA**,  
 allowing end-to-end generation of role summaries and stance predictions under limited computational resources.
 
 ---
 
-### 3. Evaluation and Visualization (Planned for P3)
+### 2. Evaluation and Visualization (Planned for P3)
 
 This step serves two purposes: (1) to assess the performance of the summarization, role-specific outputs, and conflict detection modules, and (2) to provide interpretable visualizations that highlight the **novel contributions** of the system.
 
-#### 3.1 Evaluation
+#### 2.1 Evaluation
 - **Automatic Metrics:**
   - **Summarization Quality:** ROUGE, BERTScore, and optionally BLEU/F1 for global and role-specific summaries.
   - **Conflict Detection Accuracy:** Compare predicted stances (agreement/disagreement/neutral) against human-annotated labels on a validation subset.
 - **Qualitative Inspection:** Examine generated summaries and extracted viewpoints for coherence, role separation, and alignment with source dialogue.
 
-#### 3.2 Visualization
+#### 2.2 Visualization
 - **Tools:** `matplotlib`, `seaborn`
 - Visualizations highlight the system’s multi-level understanding:
   1. **Role Dynamics:** Compare speaking distributions of host vs guest across episodes.
