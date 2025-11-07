@@ -1,4 +1,5 @@
 
+
 # Role-Aware Podcast Summarization and Divergence Detection
 
 ## Abstract
@@ -15,17 +16,9 @@ We use the SPoRC dataset, a large corpus of speaker-annotated podcast transcript
 ---
 
 ## Contributions and Novelty
-1. **Research Content**
-   
-   The project expands from traditional "podcast summarization" to a higher level of dialogue understanding, incorporating character stances and viewpoint disagreements into podcast content analysis, providing a new approach to the structured understanding of multi-character dialogue corpora.
-
-2. **Integration Challenges**
-   
-   The project integrates multi-level language understanding tasks, including topic identification, character summarization, and viewpoint conflict determination. These three areas originally belonged to different research directions: topic analysis focuses on discourse organization, character summarization on narrative structure, and stance identification involves semantic comparison and sentiment inference. Integrating these tasks into a single data pipeline requires achieving a unified input/output format at the information extraction level, maintaining semantic coherence at the logical level, and ensuring interpretability at the result level.
-
-3. **System Design**
-   
-   This project proposes a scalable, multi-layered question-and-answer podcast understanding framework. The system adopts a modular structure design, enabling information sharing and hierarchical transmission while maintaining task boundaries. Ultimately, it presents a structured output format including a global summary, role summaries, and opinions/disagreements. This design balances interpretability and scalability.
+- **Structured Dialogue Understanding:** Extends podcast summarization to include speaker stances and disagreements.  
+- **Unified Pipeline:** Integrates topic identification, role-conditioned summarization, and stance detection in a single framework.  
+- **Scalable Design:** Modular QA system producing global summaries, role summaries, and conflict insights, balancing interpretability and scalability.
 
 ---
 
@@ -127,20 +120,11 @@ allowing end-to-end generation of role summaries and stance predictions under li
 
 This step serves two purposes: (1) to assess the performance of the summarization, role-specific outputs, and conflict detection modules, and (2) to provide interpretable visualizations that highlight the **novel contributions** of the system.
 
-#### 2.1 Evaluation
-- **Automatic Metrics:**
-  - **Summarization Quality:** ROUGE, BERTScore, and optionally BLEU/F1 for global and role-specific summaries.
-  - **Conflict Detection Accuracy:** Compare predicted stances (agreement/disagreement/neutral) against human-annotated labels on a validation subset.
-- **Qualitative Inspection:** Examine generated summaries and extracted viewpoints for coherence, role separation, and alignment with source dialogue.
+### 2. Evaluation and Visualization
+- **Automatic Metrics:** ROUGE, BERTScore for summaries; stance accuracy against human labels.  
+- **Qualitative Inspection:** Assess coherence, role separation, and alignment with source dialogue.  
+- **Visualizations:** Role dynamics, divergence/conflict points, and topic relevance using `matplotlib` and `seaborn`.
 
-#### 2.2 Visualization
-- **Tools:** `matplotlib`, `seaborn`
-- Visualizations highlight the system’s multi-level understanding:
-  1. **Role Dynamics:** Compare speaking distributions of host vs guest across episodes.
-  2. **Divergence and Conflict:** Show points of disagreement and topic shifts along episode timelines.
-  3. **Topic Relevance:** Highlight segments most relevant to a given query or topic.
-
-These plots serve both as **interpretation tools** and as a way to **demonstrate the novel contributions** of role-aware, stance-sensitive summarization.
 
 ---
 
