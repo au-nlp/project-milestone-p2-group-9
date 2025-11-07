@@ -110,7 +110,7 @@ $$
 - CIAM contrastive learning enhances distinction between roles:
 
 $$
-L_\text{contra} = -\log \frac{\exp(\text{sim}(h_i^r, h_i^{+r}) / \tau)}{\sum_j \exp(\\text{sim}(h_i^r, h_j^{-\neg r}) / \tau)}
+L_\text{contra} = -\log \frac{\exp(\text{sim}(h_i^r, h_i^{+r}) / \tau)}{\sum_j \exp(\\text{sim}(h_i^r, h_j^{-r}) / \tau)}
 $$
 
 - Outputs: $S_\text{host}$, $S_\text{guest}$
@@ -141,13 +141,24 @@ allowing end-to-end generation of role summaries and stance predictions under li
 
 ---
 
-### 3. Visualization (Planned for P3)
+### 3. Evaluation and Visualization (Planned for P3)
+
+This step serves two purposes: (1) to assess the performance of the summarization, role-specific outputs, and conflict detection modules, and (2) to provide interpretable visualizations that highlight the **novel contributions** of the system.
+
+#### 3.1 Evaluation
+- **Automatic Metrics:**
+  - **Summarization Quality:** ROUGE, BERTScore, and optionally BLEU/F1 for global and role-specific summaries.
+  - **Conflict Detection Accuracy:** Compare predicted stances (agreement/disagreement/neutral) against human-annotated labels on a validation subset.
+- **Qualitative Inspection:** Examine generated summaries and extracted viewpoints for coherence, role separation, and alignment with source dialogue.
+
+#### 3.2 Visualization
 - **Tools:** `matplotlib`, `seaborn`
-- Visualize insights from preprocessing and analysis:
-  - Role balance per episode (host vs guest speaking time).
-  - Distribution and frequency of divergence points across episodes.
-  - Cosine similarity curves between consecutive utterances.
-  - Optional: visualize topic saliency scores and attention to understand summarization focus.
+- Visualizations highlight the system’s multi-level understanding:
+  1. **Role Dynamics:** Compare speaking distributions of host vs guest across episodes.
+  2. **Divergence and Conflict:** Show points of disagreement and topic shifts along episode timelines.
+  3. **Topic Relevance:** Highlight segments most relevant to a given query or topic.
+
+These plots serve both as **interpretation tools** and as a way to **demonstrate the novel contributions** of role-aware, stance-sensitive summarization.
 
 ---
 
@@ -160,21 +171,26 @@ allowing end-to-end generation of role summaries and stance predictions under li
 | **Week 47**           | Topic Summarization (AAAI 2021)       | Implement topic segmentation + saliency weighting; generate global summary S_topic          |
 | **Week 48**           | Role Summarization (LREC-COLING 2024) | Role-conditioned summaries (S_host, S_guest); integrate with topic module                   |
 | **Week 49**           | Conflict Detection (DeBERTa-MNLI)     | Add stance classification; merge retrieval + summarization + conflict into full QA pipeline |
-| **Week 50**           | Optimization & Presentation           | Evaluate (ROUGE/BERTScore/stance accuracy), visualize results, prepare final demo/report    |
+| **Week 50**           | Evaluation & Optimization             | Evaluate (ROUGE/BERTScore/stance accuracy), visualize results, prepare final demo/report    |
 | **Week 51**           | Complete P3 deliverable               | Finalized notebook, visualizations, and report                                              |            
 
 ---
 
 ## Organization Within the Team
 
-| Week                  | Milestone                                   |
-|-----------------------|---------------------------------------------|
-| **Week 45 (Current)** | Complete P2 deliverable                     | 
-| **Week 47**           | Finalize Embedding and Divergence Detection | 
-| **Week 49**           | Finalize Summarization & Baseline           |
-| **Week 50**           | Complete Evaluation & Visualization         |
-| **Week 51**           | Submit P3 deliverable                       | 
+To ensure smooth collaboration, we assign core responsibilities while maintaining weekly check-ins and code reviews:
 
+| Week                  | Focus Area                          | Lead Member | 
+|-----------------------|-------------------------------------|-------------|
+| **Week 45 (Current)** | Complete P2 deliverable             | All         | 
+| **Week 46**           | RAG Retrieval                       | All         | 
+| **Week 47**           | Topic-Level Summarization           | All         | 
+| **Week 48**           | Role-Level Summarization            | All         | 
+| **Week 49**           | Conflict Detection                  | All         | 
+| **Week 50**           | Evaluation & Optimization           | All         | 
+| **Week 51**           | Final P3 Integration and Submission | All         | 
+
+We currently haven't done any distributions to individual people. This could change in the future. 
 
 ---
 
