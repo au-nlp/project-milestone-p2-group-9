@@ -110,7 +110,7 @@ $$
 - CIAM contrastive learning enhances distinction between roles:
 
 $$
-L_\text{contra} = -\log \frac{\exp(\text{sim}(h_i^r, h_i^{+r}) / \tau)}{\sum_j \exp(\text{sim}(h_i^r, h_j^{-¬r}) / \tau)}
+L_\text{contra} = -\log \frac{\exp(\frac{\text{sim}(h_i^r, h_i^{+r})} {\tau)}}{\sum_j \exp(\frac{\text{sim}(h_i^r, h_j^{-¬r})} {\tau)}}
 $$
 
 - Outputs: $S_\text{host}$, $S_\text{guest}$
