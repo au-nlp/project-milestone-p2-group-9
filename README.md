@@ -116,10 +116,6 @@ allowing end-to-end generation of role summaries and stance predictions under li
 
 ---
 
-### 2. Evaluation and Visualization 
-
-This step serves two purposes: (1) to assess the performance of the summarization, role-specific outputs, and conflict detection modules, and (2) to provide interpretable visualizations that highlight the **novel contributions** of the system.
-
 ### 2. Evaluation and Visualization
 - **Automatic Metrics:** ROUGE, BERTScore for summaries; stance accuracy against human labels.  
 - **Qualitative Inspection:** Assess coherence, role separation, and alignment with source dialogue.  
