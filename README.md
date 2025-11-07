@@ -209,6 +209,18 @@ allowing end-to-end generation of role summaries and stance predictions under li
 | **Week 51**           | Complete P3 deliverable          | Finalized notebook, visualizations, and report                                                                        |
 
 ---
+## Proposed Timeline(new)
+
+| Week                  | Planned Focus Area                  | Expected Output                                                                       |
+|-----------------------|--------------------------------------|--------------------------------------------------------------------------------------|
+| **Week 45 (Current)** | Complete P2 deliverable              | Clean dataset subset, descriptive notebook, finalized README                             |
+| **Week 46**           | RAG Retrieval Setup                  | Functional retriever (FAISS/Chroma), working query → top-K turns demo           |
+| **Week 47**           | Topic Summarization (AAAI 2021)      | Implement topic segmentation + saliency weighting; generate global summary S_topic                        |
+| **Week 48**           | Role Summarization (LREC-COLING 2024)| Role-conditioned summaries (S_host, S_guest); integrate with topic module                        |
+| **Week 49**           | Conflict Detection (DeBERTa-MNLI)    | Add stance classification; merge retrieval + summarization + conflict into full QA pipeline     |
+| **Week 50**           | Optimization & Presentation          | Evaluate (ROUGE/BERTScore/stance accuracy), visualize results, prepare final demo/report  |
+| **Week 51**           | Complete P3 deliverable              | Finalized notebook, visualizations, and report    
+---
 
 ## Organization Within the Team
 
