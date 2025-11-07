@@ -68,7 +68,7 @@ We will primarily use the **speaker-turn transcripts** for summarization and div
 - We verified feasibility through prototype scripts that:
   - Convert `.jsonl.gz` → `.csv` using chunked reading (`pandas` + `tqdm`).
   - Filter only `host` and `guest` roles.
-  - Clean text by removing empty or or pure punctuational or ultra-short turns (selectively <10 characters).
+  - Clean text by removing empty or or pure punctuational or ultra-short turns.
 - Early experiments indicate that, with chunked reading and selective filtering, the dataset can be processed efficiently on standard machines (<16 GB RAM).
 
 ---
