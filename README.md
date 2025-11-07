@@ -2,15 +2,15 @@
 # Role-Aware Podcast Summarization and Divergence Detection
 
 ## Abstract
-Podcasts are rich sources of spontaneous, multi-speaker dialogue that mix storytelling, debate, and information sharing. Yet, understanding long podcast episodes remains challenging for listeners and for downstream NLP applications.  
-Our project aims to build a **role-aware podcast understanding(QA/RAG) system** that generates both **global** and **role-specific** summaries, while also detecting **divergent conversational segments**, meaning moments when the host and guest disagree or shift topics. Specifically, our system aims to:
-1. Retrieve and summarize podcast content relevant to a given topic query (e.g., “AI and education”).
+Podcasts are rich sources of multi-speaker dialogue, blending storytelling, debate, and information sharing. Understanding long episodes is challenging for both listeners and NLP systems.
+Our project builds a role-aware podcast understanding system that generates global and role-specific summaries while detecting divergent conversational segments where speakers disagree or shift topics. Specifically, the system aims to:
+1. Retrieve and summarize podcast content relevant to a user query.
 
-2. Answer open-ended user questions (e.g., “Will AI exacerbate inequality in schools?”) by summarizing different speakers’ perspectives across episodes
+2. Answer open-ended questions by summarizing different speakers’ perspectives.
 
-3. Detect points of agreement or disagreement between speakers as part of the summarization process.
+3. Detect points of agreement or disagreement between speakers.
 
-We use the **SPoRC dataset**, a large-scale corpus of podcast transcripts with speaker-turn annotations, to model host-guest dynamics. Through embedding-based discourse analysis and transformer-based summarization models, we intend to create structured insights that reflect *who said what* and *where the conversation diverged*. This project demonstrates the feasibility of scalable dialogue understanding for complex multi-speaker audio data.
+We use the SPoRC dataset, a large corpus of speaker-annotated podcast transcripts, and combine embedding-based retrieval with transformer-based summarization to produce structured insights reflecting who said what and where conversation diverged. This demonstrates scalable dialogue understanding for multi-speaker audio.
 
 ---
 
@@ -47,11 +47,11 @@ We will primarily use the **speaker-turn transcripts** for summarization and div
 
 ## Methods 
 
-This project follows a **multi-stage pipeline** for role-aware podcast understanding, combining preprocessing, local divergence analysis, hierarchical summarization, and visualization. Some steps are already implemented (P2), while others are planned for P3.
+We adopt a multi-stage pipeline combining preprocessing, retrieval, hierarchical summarization, conflict detection, and visualization.
 
 ---
 
-### 1. Hierarchical Summarization Framework (Planned for P3)
+### 1. Hierarchical Summarization Framework 
 
 This framework extends the baseline summarization to a **three-layer system** inspired by state-of-the-art works:
 
@@ -123,7 +123,7 @@ allowing end-to-end generation of role summaries and stance predictions under li
 
 ---
 
-### 2. Evaluation and Visualization (Planned for P3)
+### 2. Evaluation and Visualization 
 
 This step serves two purposes: (1) to assess the performance of the summarization, role-specific outputs, and conflict detection modules, and (2) to provide interpretable visualizations that highlight the **novel contributions** of the system.
 
@@ -186,3 +186,5 @@ This repository contains two files (for now):
 
 
 ### Questions for TAs 
+
+None currently
