@@ -33,7 +33,21 @@ We use the **SPoRC dataset**, a large-scale corpus of podcast transcripts with s
 
 5. **Model Comparisons:**  
    To ensure robustness and interpretability, we plan to compare models of *similar scale* (e.g., T5-small vs. BART-base) rather than relying only on API-based LLMs.
+---
 
+## Contributions and Novelty(new)
+1. **Research Content**
+   
+   The project expands from traditional "podcast summarization" to a higher level of dialogue understanding, incorporating character stances and viewpoint disagreements into podcast content analysis, providing a new approach to the structured understanding of multi-character dialogue corpora.
+
+2. **Integration Challenges**
+   
+   The project integrates multi-level language understanding tasks, including topic identification, character summarization, and viewpoint conflict determination. These three areas originally belonged to different research directions: topic analysis focuses on discourse organization, character summarization on narrative structure, and stance identification involves semantic comparison and sentiment inference. Integrating these tasks into a single data pipeline requires achieving a unified input/output format at the information extraction level, maintaining semantic coherence at the logical level, and ensuring interpretability at the result level.
+
+3. **System Design**
+   
+   This project proposes a scalable, multi-layered question-and-answer podcast understanding framework. The system adopts a modular structure design, enabling information sharing and hierarchical transmission while maintaining task boundaries. Ultimately, it presents a structured output format including a global summary, role summaries, and opinions/disagreements. This design balances interpretability and scalability.
+)
 ---
 
 ## Proposed Datasets
@@ -47,14 +61,14 @@ We use the **SPoRC dataset**, a large-scale corpus of podcast transcripts with s
 We will primarily use the **speaker-turn transcripts** for summarization and divergence detection. In addition, we will leverage **episode-level metadata** (titles, descriptions, and other attributes) to enrich our analysis. These fields provide high-level context, which can improve role-specific summaries and also serve as reference points for evaluation.
 
 ### Additional Data (Potential)
-- If time permits, we might include **ASR-based summaries** (Automatic Speech Recognition) from open podcast APIs (e.g., Podscribe or ListenNotes) to compare our model to that of a generic automated summary.
 - We've discovered a podcast dataset that also features rounds. It includes a simple episode summary, the text of each round's speech, and the speaker's identity and name. Similar to SPoRC, we believe it's well-suited as an expansion dataset. Here's the link: https://github.com/zcgzcgzcg1/MediaSum
+- It is a large JSON file (4.45GB), with text quality slightly higher than the SPoRC dataset. We can process it using methods very similar to those used for the main dataset.
 
 ### Data Handling Plan
 - We verified feasibility through prototype scripts that:
   - Convert `.jsonl.gz` → `.csv` using chunked reading (`pandas` + `tqdm`).
   - Filter only `host` and `guest` roles.
-  - Clean text by removing empty or ultra-short turns (<10 characters).
+  - Clean text by removing empty or or pure punctuational or ultra-short turns (selectively <10 characters).
 - Early experiments indicate that, with chunked reading and selective filtering, the dataset can be processed efficiently on standard machines (<16 GB RAM).
 
 ---
@@ -102,6 +116,88 @@ where $(\tau)$ is a similarity threshold tuned on a validation subset.
   - Role balance per episode.
   - Distribution of divergence points and divergence frequency.
   - Similarity curves over time.
+
+---
+## Methods(new)
+This project adopts a three-layer hierarchical framework — **topic-level**, **role-level**, and **conflict-level** — inspired by two state-of-the-art works:  
+- [1] Zou et al. (2021). *Topic-Oriented Spoken Dialogue Summarization for Customer Service with Saliency-Aware Topic Modeling.* AAAI 2021.  
+- [2] Guan et al. (2024). *Improving Role-Oriented Dialogue Summarization with Interaction-Aware Contrastive Learning (CIAM).* LREC-COLING 2024.  
+The bottom layer employs Microsoft’s *DeBERTa-v3-large-MNLI* model for stance inference.
+
+---
+
+### **1. Topic-Oriented Summarization (AAAI 2021)**
+
+At the top layer, the system generates a **topic-focused global summary**.  
+Each dialogue segment *u_i* is assigned a topic distribution *p(z | u_i)* through topic modeling.  
+Its saliency score combines relevance to the query and topic confidence:
+
+s(u_i) = α * Rel(u_i, q) + (1 - α) * max_z p(z | u_i)
+Rel(u_i, q) = cosine(f(u_i), f(q))
+
+Segments with the highest saliency are concatenated and passed to a summarization model (e.g., T5/BART/LLM) to obtain the topic summary *S_topic*.
+
+---
+
+### **2. Role-Oriented Summarization (LREC-COLING 2024)**
+
+At the mid layer, the system produces **role-specific summaries** using the CIAM framework.  
+Given dialogue *x* and role tag *r* ∈ {HOST, GUEST}, generation is conditioned on the role token:
+
+
+Segments with the highest saliency are concatenated and passed to a summarization model (e.g., T5/BART/LLM) to obtain the topic summary *S_topic*.
+
+---
+
+### **2. Role-Oriented Summarization (LREC-COLING 2024)**
+
+At the mid layer, the system produces **role-specific summaries** using the CIAM framework.  
+Given dialogue *x* and role tag *r* ∈ {HOST, GUEST}, generation is conditioned on the role token:
+
+p(y | x, r) = ∏t p(y_t | y<t, x, <r>)
+
+To enhance distinction between roles, CIAM introduces interaction-aware contrastive learning:
+
+L_contra = -log( exp(sim(h_i^r, h_i^+r) / τ)
+/ Σ_j exp(sim(h_i^r, h_j^-¬r) / τ) )
+
+where *h_i^r* is the role representation, *sim()* denotes cosine similarity, and *τ* is the temperature coefficient.  
+This produces two summaries: *S_host* and *S_guest*.
+
+---
+
+### **3. Conflict Detection (Microsoft DeBERTa-v3-large-MNLI)**
+
+At the bottom layer, semantic relations between *S_host* and *S_guest* are classified by the NLI model.  
+The model outputs three probabilities — entailment, neutral, and contradiction — via softmax:
+
+
+where *h_i^r* is the role representation, *sim()* denotes cosine similarity, and *τ* is the temperature coefficient.  
+This produces two summaries: *S_host* and *S_guest*.
+
+---
+
+### **3. Conflict Detection (Microsoft DeBERTa-v3-large-MNLI)**
+
+At the bottom layer, semantic relations between *S_host* and *S_guest* are classified by the NLI model.  
+The model outputs three probabilities — entailment, neutral, and contradiction — via softmax:
+
+p_k = softmax(W * h + b)_k
+
+The final stance label is determined by thresholding these probabilities:
+
+if p_entail >= θ_e: stance = "Complete Agreement"
+elif p_contra >= θ_c: stance = "Complete Disagreement"
+else: stance = "Partial Agreement / Neutral"
+
+Thresholds θ_e, θ_c ∈ [0.6, 0.7] are empirically tuned to control boundary sensitivity.
+
+---
+
+### **4. Alternative Setup: Qwen 1.5B + LoRA**
+
+As an alternative, the pipeline can be replaced with a lightweight **Qwen 1.5B-Chat model fine-tuned via LoRA**,  
+allowing end-to-end generation of role summaries and stance predictions under limited computational resources.
 
 ---
 
