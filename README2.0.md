@@ -69,34 +69,14 @@ This preprocessing pipeline ensures we can efficiently handle the large SPoRC da
 
 ---
 
-### 2. Embedding and Divergence Detection (Planned for P3)
-- **Model:** Sentence-BERT (`all-MiniLM-L6-v2`)  
-- **Process:**
-  1. Group transcripts by episode and order by turn.
-  2. Compute cosine similarity between consecutive utterances.
-  3. Identify “divergence points” when similarity drops below a dynamic threshold.
-  4. (Potential) Validate using an NLI model (e.g., `microsoft/deberta-mnli`).
-
-Mathematical sketch:  
-$$
-\text{divergence}(t_i, t_{i+1}) =
-\begin{cases}
-1, & \text{if } \cos(\mathbf{e_i}, \mathbf{e_{i+1}}) < \tau \\
-0, & \text{otherwise}
-\end{cases}
-$$
-where $\tau$ is a similarity threshold tuned on a validation subset.
-
----
-
-### 3. Hierarchical Summarization Framework (Planned for P3)
+### 2. Hierarchical Summarization Framework (Planned for P3)
 
 This framework extends the baseline summarization to a **three-layer system** inspired by state-of-the-art works:
 
 - Zou et al. (2021), *Topic-Oriented Spoken Dialogue Summarization*  
 - Guan et al. (2024), *Role-Oriented Dialogue Summarization with CIAM*  
 
-#### 3.1 Retrieval-Augmented Generation (RAG)
+#### 2.1 Retrieval-Augmented Generation (RAG)
 - Encode each episode segment with sentence embeddings (`all-MiniLM-L6-v2`) and store in a vector index (FAISS/Chroma).
 - Retrieve top segments for a query $q$ using cosine similarity:
 
@@ -106,7 +86,7 @@ $$
 
 - Retrieved content is used as context for summarization and conflict detection modules.
 
-#### 3.2 Topic-Level Summarization
+#### 2.2 Topic-Level Summarization
 - Assign topic distributions $p(z|u_i)$ to each segment $u_i$.
 - Compute saliency combining topic confidence and relevance to the query $q$:
 
@@ -120,7 +100,7 @@ $$
 
 - Top-scoring segments are passed to T5-small/BART/LLM for global topic summary $S_\text{topic}$.
 
-#### 3.3 Role-Level Summarization
+#### 2.3 Role-Level Summarization
 - Generate host/guest summaries conditioned on role token $r \in \{\text{HOST}, \text{GUEST}\}$:
 
 $$
@@ -135,7 +115,7 @@ $$
 
 - Outputs: $S_\text{host}$, $S_\text{guest}$
 
-#### 3.4 Conflict Detection
+#### 2.4 Conflict Detection
 - Semantic relations between $S_\text{host}$ and $S_\text{guest}$ classified using DeBERTa-v3-large-MNLI.
 - Softmax probabilities for entailment, neutral, contradiction:
 
@@ -154,14 +134,14 @@ else:
     stance = "Partial Agreement / Neutral"
 ```
 
-#### 3.5. Alternative Setup: Qwen 1.5B + LoRA
+#### 2.5. Alternative Setup: Qwen 1.5B + LoRA
 
 As an alternative, the pipeline can be replaced with a lightweight **Qwen 1.5B-Chat model fine-tuned via LoRA**,  
 allowing end-to-end generation of role summaries and stance predictions under limited computational resources.
 
 ---
 
-### 4. Visualization (Planned for P3)
+### 3. Visualization (Planned for P3)
 - **Tools:** `matplotlib`, `seaborn`
 - Visualize insights from preprocessing and analysis:
   - Role balance per episode (host vs guest speaking time).
