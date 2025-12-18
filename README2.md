@@ -9,26 +9,25 @@ Contrastive-inspired embedding alignment ensures distinction between speaker rol
 ---
 
 ## Project Contributions and Novelty
-1. **Two-Stage Summarization Framework**
+1. **Role-Aware Summarization Pipeline**
    
-    Proposes a role-aware extractive–abstractive summarization pipeline, where a neural extractor first selects salient utterances and a BART-based refiner generates fluent abstractive summaries conditioned on the selected content.
+    We design and implement a summarization framework that produces both global episode summaries and role-specific summaries (host/guest), adapting role-aware modeling to the podcast domain where speaker dynamics are central.
 
-2. **Pseudo-Label Supervision for Extraction**
+2. **Pseudo-Label Supervision for Extractive Training**
 
-   Eliminates the need for manual sentence-level extractive annotations by training the extractor using pseudo-labels derived from semantic similarity between utterances and reference summaries.
+   We avoid costly manual extractive annotations by constructing pseudo-labels based on semantic similarity between utterances and reference summaries, enabling effective training of the extractor component on the SPoRC dataset.
 
-3. **Role-Aware Podcast Summarization**
+3. **Practical Two-Stage Architecture for Dialogue Summarization**
    
-    Extends dialogue summarization to produce both global episode summaries and role-specific summaries for hosts and guests, enabling clearer attribution of speaker perspectives in multi-speaker podcasts.
+    We integrate an extractive sentence selector with an abstractive BART-based generator tailored to long-form, multi-speaker podcast data, and demonstrate its effectiveness at scale.
 
-4. **Topic-Guided Content Selection**
+4. **Topic-Conditioned Content Selection**
    
-    Incorporates topic-level representations into the utterance selection and refinement process to improve saliency estimation in long, multi-topic podcast episodes.
+    By incorporating topic-level representations during extraction and refinement, we improve selection of content relevant to overall episode semantics, particularly in long and multi-topical podcasts.
 
-5. **Scalable Evaluation on SPoRC**
+5. **Comprehensive Evaluation on SPoRC**
 
-    Demonstrates the effectiveness of the approach on the SPoRC dataset, evaluating both global and role-specific summaries using ROUGE-L across hundreds of podcast episodes.
-   
+    We empirically evaluate the system using ROUGE-L for global and role-level summaries across hundreds of episodes, demonstrating reproducible and scalable performance.
 
 ---
 
