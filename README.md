@@ -1,179 +1,135 @@
+# Role-Aware Dialogue Summarization for Podcasts Using Two-Stage Extraction and Generation
 
-
-# Role-Aware Podcast Summarization and Divergence Detection
-
-## Abstract
-Podcasts are rich sources of multi-speaker dialogue, blending storytelling, debate, and information sharing. Understanding long episodes is challenging for both listeners and NLP systems.
-Our project builds a role-aware podcast understanding system that generates global and role-specific summaries while detecting divergent conversational segments where speakers disagree or shift topics. Specifically, the system aims to:
-1. Retrieve and summarize podcast content relevant to a user query.
-
-2. Answer open-ended questions by summarizing different speakers’ perspectives.
-
-3. Detect points of agreement or disagreement between speakers.
-
-We use the SPoRC dataset, a large corpus of speaker-annotated podcast transcripts, and combine embedding-based retrieval with transformer-based summarization to produce structured insights reflecting who said what and where conversation diverged. This demonstrates scalable dialogue understanding for multi-speaker audio.
+## Abstract / Project Overview
+Podcasts are a rapidly growing source of long-form spoken content featuring multiple speakers, informal language, and frequent topic shifts. These properties make automatic summarization challenging, especially when users are interested not only in a global overview but also in understanding how different speakers contribute to a conversation.
+This project implements a role-aware two-stage podcast summarization system that generates both a global episode summary and role-specific summaries for hosts and guests.  
+The system is trained without manual sentence-level extractive annotations by leveraging pseudo-labels derived from semantic similarity between utterances and reference summaries. Experiments are conducted on the SPoRC (Speaker–Podcast Relationship Corpus) dataset.  
+Contrastive-inspired embedding alignment ensures distinction between speaker roles.
 
 ---
 
-## Contributions and Novelty
-1. **Research Content**
+## Project Contributions and Novelty
+1. **Role-Aware Summarization Pipeline**
    
-   Expands podcast summarization to **dialogue understanding**, incorporating speaker stances and disagreements, enabling structured analysis of multi-character conversations.
+    We design and implement a summarization framework that produces both global episode summaries and role-specific summaries (host/guest), adapting role-aware modeling to the podcast domain where speaker dynamics are central.
 
-2. **Integration Challenges**
+2. **Pseudo-Label Supervision for Extractive Training**
+
+   We avoid costly manual extractive annotations by constructing pseudo-labels based on semantic similarity between utterances and reference summaries, enabling effective training of the extractor component on the SPoRC dataset.
+
+3. **Practical Two-Stage Architecture for Dialogue Summarization**
    
-   Combines topic identification, role-conditioned summarization, and stance detection into a single pipeline, ensuring semantic coherence, unified input/output formats, and interpretable results.
+    We integrate an extractive sentence selector with an abstractive BART-based generator tailored to long-form, multi-speaker podcast data, and demonstrate its effectiveness at scale.
 
-3. **System Design**
+4. **Topic-Conditioned Content Selection**
    
-   Proposes a modular, multi-layered QA framework producing **global summaries, role summaries, and disagreement insights**, balancing scalability and interpretability.
+    By incorporating topic-level representations during extraction and refinement, we improve selection of content relevant to overall episode semantics, particularly in long and multi-topical podcasts.
 
+5. **Comprehensive Evaluation on SPoRC**
 
----
-
-## Proposed Datasets
-
-### Primary Dataset
-- **SPoRC: Speaker–Podcast Relationship Corpus** ([Hugging Face link](https://huggingface.co/datasets/blitt/SPoRC))  
-  - Approximately 22 GB of English podcast transcripts.  
-  - Contains both **episode-level** and **turn-level** files.  
-  - Each turn includes text, inferred speaker role (`host`, `guest`, `cohost`, etc.), and episode metadata.
-
-We will primarily use the **speaker-turn transcripts** for summarization and divergence detection. In addition, we will leverage **episode-level metadata** (titles, descriptions, and other attributes) to enrich our analysis. These fields provide high-level context, which can improve role-specific summaries and also serve as reference points for evaluation.
-
-### Additional Data (Potential)
-- We've discovered a podcast dataset that also features rounds. It includes a simple episode summary, the text of each round's speech, and the speaker's identity and name. Similar to SPoRC, we believe it's well-suited as an expansion dataset. Here's the link: https://github.com/zcgzcgzcg1/MediaSum
-  - It is a large JSON file (4.45GB), with text quality slightly higher than the SPoRC dataset. We can process it using methods very similar to those used for the main dataset.
+    We empirically evaluate the system using ROUGE-L for global and role-level summaries across hundreds of episodes, demonstrating reproducible and scalable performance.
 
 ---
 
-## Methods 
+## Dataset
+We use the **SPoRC dataset**, which contains speaker-annotated podcast transcripts with both turn-level dialogue and episode-level summaries.
 
-We adopt a multi-stage pipeline combining preprocessing, retrieval, hierarchical summarization, conflict detection, and visualization.
+- Turn-level CSV:
+  - utterance text
+  - speaker role (e.g., host, guest)
+  - episode and turn indices
+- Episode-level summaries:
+  - global summary
+  - host summary
+  - guest summary
 
----
-
-### 1. Hierarchical Summarization Framework 
-
-This framework extends the baseline summarization to a **three-layer system** inspired by state-of-the-art works:
-
-- Zou et al. (2021), *Topic-Oriented Spoken Dialogue Summarization*  
-- Guan et al. (2024), *Role-Oriented Dialogue Summarization with CIAM*  
-
-#### 1.1 Retrieval-Augmented Generation (RAG)
-- Encode each episode segment with sentence embeddings (`all-MiniLM-L6-v2`) and store in a vector index (FAISS/Chroma).
-- Retrieve top segments for a query $q$ using cosine similarity:
-
-$$
-\text{Retrieve}(q) = \arg\max_{u_i} \frac{e_q^\top e_i}{\lVert e_q \rVert \lVert e_i \rVert}
-$$
-
-- Retrieved content is used as context for summarization and conflict detection modules.
-
-#### 1.2 Topic-Level Summarization
-- Assign topic distributions $p(z|u_i)$ to each segment $u_i$.
-- Compute saliency combining topic confidence and relevance to the query $q$:
-
-$$
-s(u_i) = \alpha \cdot \text{Rel}(u_i, q) + (1 - \alpha) \cdot \max_z p(z|u_i)
-$$
-
-$$
-\text{Rel}(u_i, q) = \cos(f(u_i), f(q))
-$$
-
-- Top-scoring segments are passed to T5-small/BART/LLM for global topic summary $S_\text{topic}$.
-
-#### 1.3 Role-Level Summarization
-- Generate host/guest summaries conditioned on role token $r \in \{\text{HOST}, \text{GUEST}\}$:
-
-$$
-p(y | x, r) = \prod_t p(y_t | y_{\< t}, x, r)
-$$
-
-- CIAM contrastive learning enhances distinction between roles:
-
-$$
-L_\text{contra} = -\log \frac{\exp(\text{sim}(h_i^r, h_i^{+r}) / \tau)}{\sum_j \exp(\\text{sim}(h_i^r, h_j^{-r}) / \tau)}
-$$
-
-- Outputs: $S_\text{host}$, $S_\text{guest}$
-
-#### 1.4 Conflict Detection
-- Semantic relations between $S_\text{host}$ and $S_\text{guest}$ classified using DeBERTa-v3-large-MNLI.
-- Softmax probabilities for entailment, neutral, contradiction:
-
-$$
-p_k = \text{softmax}(W h + b)_k
-$$
-
-- Stance label determined via thresholds $\theta_e$, $\theta_c$:
-
-```python
-if p_entail >= θ_e:
-    stance = "Complete Agreement"
-elif p_contra >= θ_c:
-    stance = "Complete Disagreement"
-else:
-    stance = "Partial Agreement / Neutral"
-```
-
-#### 1.5. Alternative Setup: Qwen 1.5B + LoRA
-
-As an alternative, the pipeline can be replaced with a lightweight **Qwen 1.5B-Chat model fine-tuned via LoRA**,  
-allowing end-to-end generation of role summaries and stance predictions under limited computational resources.
+Episodes without a global summary are excluded from training, and role-specific summaries are used only when available.
 
 ---
 
-### 2. Evaluation and Visualization
-- **Automatic Metrics:** ROUGE, BERTScore for summaries; stance accuracy against human labels.  
-- **Qualitative Inspection:** Assess coherence, role separation, and alignment with source dialogue.  
-- **Visualizations:** Role dynamics, divergence/conflict points, and topic relevance using `matplotlib` and `seaborn`.
+## Method
 
+### Two-Stage Summarization Pipeline
+Our system follows a **two-stage extractive–abstractive framework**:
 
----
+#### 1. Extractive Utterance Selection
+- Each utterance is encoded using a **pretrained BART encoder**
+- A lightweight neural extractor assigns an importance score to each utterance
+- The extractor is trained using **pseudo-labels**, constructed by selecting the top-k utterances most semantically similar to the reference summary
+- Sentence similarity is computed using **Sentence-BERT**
 
-## Proposed Timeline
+This process avoids the need for costly manual extractive annotations.
 
-| Week                  | Planned Focus Area                    | Expected Output                                                                             |
-|-----------------------|---------------------------------------|---------------------------------------------------------------------------------------------|
-| **Week 45 (Current)** | Complete P2 deliverable               | Clean dataset subset, descriptive notebook, finalized README                                |
-| **Week 46**           | RAG Retrieval Setup                   | Functional retriever (FAISS/Chroma), working query → top-K turns demo                       |
-| **Week 47**           | Topic Summarization (AAAI 2021)       | Implement topic segmentation + saliency weighting; generate global summary S_topic          |
-| **Week 48**           | Role Summarization (LREC-COLING 2024) | Role-conditioned summaries (S_host, S_guest); integrate with topic module                   |
-| **Week 49**           | Conflict Detection (DeBERTa-MNLI)     | Add stance classification; merge retrieval + summarization + conflict into full QA pipeline |
-| **Week 50**           | Evaluation & Optimization             | Evaluate (ROUGE/BERTScore/stance accuracy), visualize results, prepare final demo/report    |
-| **Week 51**           | Complete P3 deliverable               | Finalized notebook, visualizations, and report                                              |            
-
----
-
-## Organization Within the Team
-
-To ensure smooth collaboration, we assign core responsibilities while maintaining weekly check-ins and code reviews:
-
-| Week                  | Focus Area                          | Lead Member | 
-|-----------------------|-------------------------------------|-------------|
-| **Week 45 (Current)** | Complete P2 deliverable             | All         | 
-| **Week 46**           | RAG Retrieval                       | All         | 
-| **Week 47**           | Topic-Level Summarization           | All         | 
-| **Week 48**           | Role-Level Summarization            | All         | 
-| **Week 49**           | Conflict Detection                  | All         | 
-| **Week 50**           | Evaluation & Optimization           | All         | 
-| **Week 51**           | Final P3 Integration and Submission | All         | 
-
-We haven't done any distributions to individual people, because we are trying to train in parallel. 
+#### 2. Abstractive Refinement
+- Selected utterances are concatenated
+- A **BART-based abstractive generator** produces the final summary
+- The same pipeline supports:
+  - global summaries
+  - host-only summaries
+  - guest-only summaries
 
 ---
 
-## Appendix
+## Training
+- The extractor is trained using **binary cross-entropy loss**
+- Optimization is performed with **AdamW**
+- Training is conducted on a subset of episodes for computational feasibility
+- The abstractive refiner uses pretrained weights and is applied during inference
 
-### Repo Organisation
-This repository contains two files (for now):
+---
 
-- **`main.ipynb`** - Jupyter notebook containing all code related to the P2 hand-in.
-- **`README.md`** - Detailed project proposal and documentation of methods, timeline, and team organization.
+## Evaluation
+We evaluate summary quality using **ROUGE-L F1**, comparing generated summaries against the corresponding reference summaries provided in SPoRC.
+
+Evaluation is performed separately for:
+- global summaries
+- host summaries
+- guest summaries
+
+---
+
+## Project Structure
+``dataset_tds.py`` # Dataset loading and pseudo-label generation  
+``model_tds.py`` # Two-stage summarization model  
+``train_tds.py`` # Extractor training loop  
+``train_satm.py`` # Extractor training loop 
+``inference_tds.py`` # Summary generation  
+``evaluation.py`` # ROUGE-L evaluation  
+``sproc_pipeline2.ipynb`` # End-to-end experiment notebook  
+``sproc_pipeline2-results.ipynb`` # 
+
+---
+
+## Updates Since Milestone P2
+Compared to the initial project proposal, the final implementation:
+- Focuses exclusively on **role-aware summarization**
+- Removes retrieval, conflict detection, and stance analysis components
+- Replaces planned supervised extractive training with **pseudo-label supervision**
+- Consolidates experiments into a stable two-stage summarization pipeline
+
+These changes allowed us to produce a robust and reproducible system while remaining close to our original objectives.
+
+---
+
+## Team Contributions
+**Hjalte V. Vinther:** <br>
+Literature searching, report writing, report polishing/proofreading, writing and proofreading the README.md file, setting up the main.ipynb file, debugging of errors throughout the codebase, assisted with coding on: (dataset_tds.py, inference_tds.py, model_tds.py, train_satm.py, main.ipynb)
+
+**Jiqiang Dong:** <br>
 
 
-### Questions for TAs 
+**Chuanrui Tang:** <br>
 
-None currently
+
+
+
+Development was carried out collaboratively with shared responsibility across components.
+
+---
+
+## References
+- Zou et al. (2021). *Topic-Oriented Spoken Dialogue Summarization*
+- Guan et al. (2024). *Role-Oriented Dialogue Summarization with Interaction-Aware Contrastive Learning*
+- SPoRC 
+- MediaSum. *Github used for inspiration*: https://github.com/zcgzcgzcg1/MediaSum
+- Topic-Dialog-Summ. *Github used for inspiration*: https://github.com/RowitZou/topic-dialog-summ
