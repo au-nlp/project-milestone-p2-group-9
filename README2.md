@@ -92,9 +92,11 @@ Evaluation is performed separately for:
 ``dataset_tds.py`` # Dataset loading and pseudo-label generation  
 ``model_tds.py`` # Two-stage summarization model  
 ``train_tds.py`` # Extractor training loop  
+``train_satm.py`` # Extractor training loop 
 ``inference_tds.py`` # Summary generation  
 ``evaluation.py`` # ROUGE-L evaluation  
 ``sproc_pipeline2.ipynb`` # End-to-end experiment notebook  
+``sproc_pipeline2-results.ipynb`` # 
 
 ---
 
@@ -111,7 +113,7 @@ These changes allowed us to produce a robust and reproducible system while remai
 
 ## Team Contributions
 **Hjalte V. Vinther:** <br>
-Literature searching, report writing, report polishing/proofreading, writing and proofreading the README.md file, setting up the main.ipynb file, debugging of errors throughout the codebase, assisted with coding on: (dataset_tds.py, inference_tds.py, model_tds.py, train_satm.py)
+Literature searching, report writing, report polishing/proofreading, writing and proofreading the README.md file, setting up the main.ipynb file, debugging of errors throughout the codebase, assisted with coding on: (dataset_tds.py, inference_tds.py, model_tds.py, train_satm.py, main.ipynb)
 
 **Jiqiang Dong:** <br>
 
