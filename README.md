@@ -156,3 +156,4 @@ Development was carried out collaboratively with shared responsibility across co
 - SPoRC 
 - MediaSum. *Github used for inspiration*: https://github.com/zcgzcgzcg1/MediaSum
 - Topic-Dialog-Summ. *Github used for inspiration*: https://github.com/RowitZou/topic-dialog-summ
+- We uploaded the cleaned data, the generated pseudo-summary dataset, and the resulting test results. *https://drive.google.com/drive/folders/1nWZvH3YusY4N4QbCE3cbcXdEg04FLClT*
