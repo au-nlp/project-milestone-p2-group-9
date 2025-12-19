@@ -142,7 +142,7 @@ Literature searching, report writing, report polishing/proofreading, writing and
 (to be filled)
 
 **Chuanrui Tang:** <br>
-(to be filled)
+Finding and reading reference papers, researching and constructing ideas, writing the main code of the model algorithm and conducting small-scale training, and writing the main body of the report.
 
 
 
