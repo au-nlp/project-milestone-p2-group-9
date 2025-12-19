@@ -115,9 +115,7 @@ This separation allows us to assess both overall summarization quality and the m
 ``model_tds.py`` — Two-stage summarization model with extractive utterance selection and BART-based abstractive refinement <br>
 ``README.md`` — README file for an overview of the code and project, included team contributions <br>
 ``sporc_full_summaries_7b.jsonl`` — Line by line JSON file containing full episodic summaries <br>
-``sproc_pipeline2.ipynb`` — End-to-end experiment notebook <br>
-``sproc_pipeline2-results.ipynb`` — End-to-end experiment notebook, with both results and analysis done on 250 episodes <br>
-``sproc_pipeline2-1000.ipynb`` — End-to-end experiment notebook, with both results and analysis done on 1000 episodes <br>
+``sproc_pipeline2-final.ipynb`` — End-to-end experiment notebook, with both results and analysis <br>
 ``train_tds.py`` — # Train the TDS two-stage model (extractor + abstractive refiner) using pseudo-labels and SATM topic vectors <br>
 ``train_satm.py`` — Train SATM topic model for producing episode-level topic vectors used in TDS extraction <br>
 
