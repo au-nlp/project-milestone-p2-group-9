@@ -139,7 +139,7 @@ These changes allowed us to produce a robust and reproducible system while remai
 Literature searching, report writing, report polishing/proofreading, writing and proofreading the README.md file, setting up the main.ipynb file, debugging of errors throughout the codebase, assisted with coding on: (dataset_tds.py, inference_tds.py, model_tds.py, train_satm.py, main.ipynb)
 
 **Jiqiang Dong:** <br>
-(to be filled)
+Finding and reading reference papers, conducting research, mainly generating the pseudo-summary dataset, running large-scale training on the full dataset, and contributing to report writing.
 
 **Chuanrui Tang:** <br>
 Finding and reading reference papers, researching and constructing ideas, writing the main code of the model algorithm and conducting small-scale training, and writing the main body of the report.
