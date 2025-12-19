@@ -110,13 +110,13 @@ These changes allowed us to produce a robust and reproducible system while remai
 ---
 
 ## Team Contributions
-**Hjalte V. Vinther:**
+**Hjalte V. Vinther:** <br>
+Literature searching, report writing, report polishing/proofreading, writing and proofreading the README.md file, setting up the main.ipynb file, debugging of errors throughout the codebase, assisted with coding on: (dataset_tds.py, inference_tds.py, model_tds.py, train_satm.py)
+
+**Jiqiang Dong:** <br>
 
 
-**:**
-
-
-**:**
+**Chuanrui Tang:** <br>
 
 
 
