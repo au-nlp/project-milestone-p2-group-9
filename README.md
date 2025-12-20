@@ -126,7 +126,7 @@ modules <br>
 
 ---
 
-## Comparison to the plan of the Milestone P2
+## Comparison to the plan of Milestone P2
 Since the P2 proposal, the project has undergone several refinements to better align the system design with practical constraints and implementation feasibility.
 
 Compared to the original plan, the final system:
