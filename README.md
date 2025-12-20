@@ -121,7 +121,7 @@ modules <br>
 |-> ``dataset_tds.py`` — SPoRC dataset loading, episode grouping, and role-aware pseudo-label generation <br>
 |-> ``inference_tds.py`` — Episode-level summary generation (extractive selection + abstractive BART refinement) <br>
 |-> ``model_tds.py`` — Two-stage summarization model with extractive utterance selection and BART-based abstractive refinement <br>
-|-> ``old_README.md`` — The README.md file from the P2 milestone <br>
+|-> ``preprocessing.md`` — The README.md file from the P2 milestone <br>
 |-> ``train_tds.py`` — # Train the TDS two-stage model (extractor + abstractive refiner) using pseudo-labels and SATM topic vectors <br>
 |-> ``train_satm.py`` — Train SATM topic model for producing episode-level topic vectors used in TDS extraction <br>
 ``main.ipynb`` — The main notebook used for the project. A merge of the other files, to collect the main logic in one place <br>
