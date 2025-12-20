@@ -151,7 +151,7 @@ preserves the original goals of role-aware understanding and speaker divergence 
 
 ## Team Contributions
 **Hjalte V. Vinther:** <br>
-Literature searching and reading, conducting research, setting up the main.ipynb file, assisting with coding throughout the different parts of the system, writing and proofreading the README.md file, report writing and polishing/proofreading.
+Literature searching and reading, conducting research, assisting with coding throughout the different parts of the system, setting up the main.ipynb file,  writing and proofreading the README.md file, report writing and polishing/proofreading.
 
 **Jiqiang Dong:** <br>
 Finding and reading reference papers, conducting research, mainly generating the pseudo-summary dataset, running large-scale training on the full dataset, and contributing to report writing.
