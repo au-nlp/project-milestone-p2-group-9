@@ -126,7 +126,7 @@ modules <br>
 |-> ``train_satm.py`` — Train SATM topic model for producing episode-level topic vectors used in TDS extraction <br>
 ``main.ipynb`` — The main notebook used for the project. A merge of the other files, to collect the main logic in one place <br>
 ``preprocessing.ipynb`` — The preprocessing part of the code. Part 1-8 in the main.ipynb file <br>
-``README.md`` — README file for an overview of the code and project, included team contributions <br>
+``README.md`` — README file for an overview of the code and project, including team contributions <br>
 ``report.pdf`` — The project report <br>
 ``sporc_fake_summary.ipynb`` — End-to-end experiment notebook, built around a local LLM (Qwen 2.5). Part 9-12 in the main.ipynb file <br>
 ``sporc_full_summaries_7b.jsonl`` — Line by line JSON file containing full episodic summaries <br>
