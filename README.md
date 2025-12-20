@@ -109,7 +109,7 @@ This separation allows us to assess both overall summarization quality and the m
 ---
 
 ## Project Structure
-modules
+modules <br>
 |-> ``dataset_tds.py`` — SPoRC dataset loading, episode grouping, and role-aware pseudo-label generation <br>
 |-> ``inference_tds.py`` — Episode-level summary generation (extractive selection + abstractive BART refinement) <br>
 |-> ``model_tds.py`` — Two-stage summarization model with extractive utterance selection and BART-based abstractive refinement <br>
