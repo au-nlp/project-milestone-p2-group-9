@@ -98,7 +98,7 @@ without requiring manual extractive annotations.
 ## Evaluation
 
 - Summary quality is evaluated using **ROUGE-L F1**
-- Generated summaries are compared against SPoRC reference summaries
+- Generated summaries are compared against fixed LLM-generated silver reference summaries
 - Evaluation is performed separately for:
   - global summaries
   - host summaries
@@ -113,20 +113,20 @@ modules <br>
 |-> ``dataset_tds.py`` — SPoRC dataset loading, episode grouping, and role-aware pseudo-label generation <br>
 |-> ``inference_tds.py`` — Episode-level summary generation (extractive selection + abstractive BART refinement) <br>
 |-> ``model_tds.py`` — Two-stage summarization model with extractive utterance selection and BART-based abstractive refinement <br>
-|-> ``old_main.ipynb`` — The main.ipynb file from the P2 milestone <br>
 |-> ``old_README.md`` — The README.md file from the P2 milestone <br>
 |-> ``train_tds.py`` — # Train the TDS two-stage model (extractor + abstractive refiner) using pseudo-labels and SATM topic vectors <br>
 |-> ``train_satm.py`` — Train SATM topic model for producing episode-level topic vectors used in TDS extraction <br>
 ``main.ipynb`` — The main notebook used for the project. A merge of the other files, to collect the main logic in one place <br>
+``preprocessing.ipynb`` — The preprocessing part of the code. Part 1-8 in the main.ipynb file <br>
 ``README.md`` — README file for an overview of the code and project, included team contributions <br>
 ``report.pdf`` — The project report <br>
-``sporc_fake_summary.ipynb`` — End-to-end experiment notebook, built around a local LLM (Qwen 2.5) <br>
+``sporc_fake_summary.ipynb`` — End-to-end experiment notebook, built around a local LLM (Qwen 2.5). Part 9-12 in the main.ipynb file <br>
 ``sporc_full_summaries_7b.jsonl`` — Line by line JSON file containing full episodic summaries <br>
-``sproc_pipeline2-final.ipynb`` — End-to-end experiment notebook, with both results and analysis <br>
+``sproc_pipeline2-final.ipynb`` — End-to-end experiment notebook, with both results and analysis. Part 13-25 in the main.ipynb file <br>
 
 ---
 
-## Updates Since Milestone P2
+## Main differences since Milestone P2
 Since the P2 proposal, the project has undergone several refinements to better align the system design with practical constraints and implementation feasibility.
 
 Compared to the original plan, the final system:
