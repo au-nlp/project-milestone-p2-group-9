@@ -117,7 +117,7 @@ modules <br>
 |-> ``old_README.md`` — The README.md file from the P2 milestone <br>
 |-> ``train_tds.py`` — # Train the TDS two-stage model (extractor + abstractive refiner) using pseudo-labels and SATM topic vectors <br>
 |-> ``train_satm.py`` — Train SATM topic model for producing episode-level topic vectors used in TDS extraction <br>
-``main.ipynb`` — The main notebook used for the project. A merge of the other files, to make collect the main logic in one place <br>
+``main.ipynb`` — The main notebook used for the project. A merge of the other files, to collect the main logic in one place <br>
 ``README.md`` — README file for an overview of the code and project, included team contributions <br>
 ``report.pdf`` — The project report <br>
 ``sporc_fake_summary.ipynb`` — End-to-end experiment notebook, built around a local LLM (Qwen 2.5) <br>
@@ -127,13 +127,17 @@ modules <br>
 ---
 
 ## Updates Since Milestone P2
-Compared to the initial project proposal, the final implementation:
-- Focuses exclusively on **role-aware summarization**
-- Removes retrieval, conflict detection, and stance analysis components
-- Replaces planned supervised extractive training with **pseudo-label supervision**
-- Consolidates experiments into a stable two-stage summarization pipeline
+Since the P2 proposal, the project has undergone several refinements to better align the system design with practical constraints and implementation feasibility.
 
-These changes allowed us to produce a robust and reproducible system while remaining close to our original objectives.
+Compared to the original plan, the final system:
+- Narrows the summarization pipeline to a **two-stage extractive–abstractive framework**, removing explicit topic modeling and contrastive learning components
+- Replaces assumed supervised extractive training with **weak supervision via LLM-generated silver summaries**, enabling scalable training without sentence-level annotations
+- Retains **role-aware summarization** as a core objective, producing global, host-specific, and guest-specific summaries
+- Implements **viewpoint conflict detection** using a pretrained NLI model over role-specific summaries, instead of stance classification against human labels
+- Simplifies retrieval-augmented generation into a **retrieval-based QA interface** over pre-generated summaries and conflict evidence
+
+These changes allowed the project to transition from a broad exploratory design to a focused, reproducible system that 
+preserves the original goals of role-aware understanding and speaker divergence analysis, while remaining feasible within the project scope.
 
 ---
 
