@@ -160,8 +160,7 @@ Finding and reading reference papers, conducting research, mainly generating the
 Finding and reading reference papers, researching and constructing ideas, writing the main code of the model algorithm and conducting small-scale training, and writing the main body of the report.
 
 
-
-Development was carried out collaboratively with shared responsibility across components.
+Development was mainly carried out collaboratively with shared responsibility across components.
 
 ---
 
