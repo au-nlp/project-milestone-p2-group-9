@@ -67,6 +67,8 @@ Our system follows a **two-stage extractive–abstractive framework**:
 - The extractor is trained using **pseudo-labels**, constructed by selecting the top-k utterances most semantically 
 similar to the reference summary
 - Sentence similarity is computed using **Sentence-BERT**
+- **LLM-generated summaries (Qwen 2.5)** are used as silver reference summaries for pseudo-label construction in place 
+of manual extractive annotations
 
 This approach enables effective extractive training without manual annotation.
 
@@ -78,20 +80,25 @@ This approach enables effective extractive training without manual annotation.
   - host-only summaries
   - guest-only summaries
 
+#### 3. Post-Processing
+- **Viewpoint conflict detection** using a pretrained NLI model can analyze role-specific summaries to identify 
+disagreements or contrasting viewpoints between hosts and guests
+
 ---
 
 ## Training
 - Extractor training:
   - trained using **binary cross-entropy loss**
   - optimization is performed with **AdamW**
-  - frozen utterance encoder used
+  - utterance encoder frozen
+  - pseudo-labels generated using Qwen 2.5 silver summaries
 - Refiner training:
   - supervised sequence-to-sequence learning
-  - reference summaries used as silver targets
+  - target summaries include both human reference and LLM-generated silver summaries
 - Training is conducted on a subset of episodes for computational feasibility
 
-Together, this training setup enables efficient learning of both sentence selection and role-aware summary generation 
-without requiring manual extractive annotations.
+This setup enables efficient learning of sentence selection and role-aware summary generation without requiring 
+manual extractive annotations, while leveraging LLM outputs to scale the system.
 
 ---
 
@@ -104,7 +111,8 @@ without requiring manual extractive annotations.
   - host summaries
   - guest summaries
 
-This separation allows us to assess both overall summarization quality and the models ability to capture role-specific perspectives.
+This separation allows us to assess both overall summarization quality and the models ability to capture 
+role-specific perspectives.
 
 ---
 
