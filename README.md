@@ -109,15 +109,20 @@ This separation allows us to assess both overall summarization quality and the m
 ---
 
 ## Project Structure
-``dataset_tds.py`` — SPoRC dataset loading, episode grouping, and role-aware pseudo-label generation <br>
-``inference_tds.py`` — Episode-level summary generation (extractive selection + abstractive BART refinement) <br>
-``main.ipynb`` — The main notebook used for the project <br>
-``model_tds.py`` — Two-stage summarization model with extractive utterance selection and BART-based abstractive refinement <br>
+modules
+|-> ``dataset_tds.py`` — SPoRC dataset loading, episode grouping, and role-aware pseudo-label generation <br>
+|-> ``inference_tds.py`` — Episode-level summary generation (extractive selection + abstractive BART refinement) <br>
+|-> ``model_tds.py`` — Two-stage summarization model with extractive utterance selection and BART-based abstractive refinement <br>
+|-> ``old_main.ipynb`` — The main.ipynb file from the P2 milestone <br>
+|-> ``old_README.md`` — The README.md file from the P2 milestone <br>
+|-> ``train_tds.py`` — # Train the TDS two-stage model (extractor + abstractive refiner) using pseudo-labels and SATM topic vectors <br>
+|-> ``train_satm.py`` — Train SATM topic model for producing episode-level topic vectors used in TDS extraction <br>
+``main.ipynb`` — The main notebook used for the project. A merge of the other files, to make collect the main logic in one place <br>
 ``README.md`` — README file for an overview of the code and project, included team contributions <br>
+``report.pdf`` — The project report <br>
+``sporc_fake_summary.ipynb`` — End-to-end experiment notebook, built around a local LLM (Qwen 2.5) <br>
 ``sporc_full_summaries_7b.jsonl`` — Line by line JSON file containing full episodic summaries <br>
 ``sproc_pipeline2-final.ipynb`` — End-to-end experiment notebook, with both results and analysis <br>
-``train_tds.py`` — # Train the TDS two-stage model (extractor + abstractive refiner) using pseudo-labels and SATM topic vectors <br>
-``train_satm.py`` — Train SATM topic model for producing episode-level topic vectors used in TDS extraction <br>
 
 ---
 
@@ -134,7 +139,7 @@ These changes allowed us to produce a robust and reproducible system while remai
 
 ## Team Contributions
 **Hjalte V. Vinther:** <br>
-Literature searching, report writing, report polishing/proofreading, writing and proofreading the README.md file, setting up the main.ipynb file, debugging of errors throughout the codebase, assisted with coding on: (dataset_tds.py, inference_tds.py, model_tds.py, train_satm.py, main.ipynb)
+Literature searching and reading, conducting research, setting up the main.ipynb file, assisting with coding throughout the different parts of the system, writing and proofreading the README.md file, report writing and polishing/proofreading.
 
 **Jiqiang Dong:** <br>
 Finding and reading reference papers, conducting research, mainly generating the pseudo-summary dataset, running large-scale training on the full dataset, and contributing to report writing.
